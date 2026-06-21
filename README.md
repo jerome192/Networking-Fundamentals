@@ -72,3 +72,7 @@ This repository will be expanded as my learning progresses to include:
 This repository is part of an ongoing learning journey in networking and cybersecurity. The content will be refined and expanded over time as understanding improves.
 
 ---
+## Author
+
+**Jerome Danquah Amoako**  
+Information Technology Background | MBA Candidate | Aspiring Cybersecurity Researcher
