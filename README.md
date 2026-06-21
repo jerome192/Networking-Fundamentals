@@ -34,12 +34,11 @@ Each topic is explained in a simplified, structured format to support both under
 
 ## Repository Structure
 networking-fundamentals/
-│
-├── tcp-ip-flow.md
-├── dns-resolution.md
-├── subnetting.md
-├── http-https.md
-└── README.md
+ ├── README.md
+ ├── tcp-ip-flow.md
+ ├── dns-resolution.md
+ ├── subnetting.md
+ ├── http-https.md
 
 
 ---
