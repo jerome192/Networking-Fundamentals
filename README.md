@@ -92,4 +92,4 @@ Accuracy, clarity, and practical relevance are prioritized in every topic.
 ## Author
 
 **Jerome Danquah Amoako**
-**Information Technology Background | MBA Candidate | Aspiring Penetration Tester
+**Information Technology Background | MBA Candidate | Aspiring Penetration Tester**
