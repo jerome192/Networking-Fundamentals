@@ -86,7 +86,7 @@ This process is called:
 
 ## Diagram: OSI and TCP/IP Mapping
 
-![OSI vs TCP/IP Model](images/osi-vs-tcpip.png)
+![OSI vs TCP/IP Model](images/osi-vs-tcpip.jpg)
 
 ---
 
