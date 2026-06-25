@@ -2,86 +2,94 @@
 
 ## Overview
 
-This repository contains structured notes on core computer networking concepts. It is part of my foundational learning journey in preparation for advanced study in cybersecurity and penetration testing.
+This repository contains structured notes on core networking concepts studied through the Cisco Networking Basics course and expanded with practical cybersecurity relevance.
 
-The goal is to understand how data moves across networks, how systems communicate, and how these mechanisms support modern internet infrastructure and security analysis.
+Its purpose is to build a strong understanding of how devices communicate, how packets move across local and remote networks, and how networking principles form the foundation for penetration testing, vulnerability assessment, and cybersecurity engineering.
+
+The repository follows a practical learning approach, focusing on concepts that directly support offensive security workflows such as reconnaissance, enumeration, lateral movement, and web communication analysis.
 
 ---
 
 ## Purpose
 
-The purpose of this repository is to:
+The main objectives of this repository are to:
 
-- Build a strong foundation in computer networking
-- Develop clear and structured technical understanding
-- Strengthen the ability to explain technical concepts simply
-- Prepare for future studies in cybersecurity and penetration testing
+* Develop a strong foundation in computer networking
+* Strengthen practical understanding of packet flow and communication models
+* Build technical documentation skills through structured writeups
+* Connect networking concepts to real-world cybersecurity applications
+* Prepare for advanced study in cybersecurity, penetration testing, and exploit development
 
 ---
 
 ## Learning Order
 
-The topics in this repository should be studied in the following order:
+The topics in this repository are structured in the following order:
 
-1. TCP/IP model and data flow  
-2. DNS resolution process  
-3. Subnetting and IP addressing  
-4. HTTP and HTTPS communication  
+1. OSI vs TCP/IP Models
+2. Packet Encapsulation and Data Flow
+3. ARP Process
+4. IPv4 Addressing and Subnetting
+5. Routing Basics
+6. NAT and PAT
+7. DHCP Process
+8. TCP vs UDP
+9. Common Ports and Services
+10. DNS Resolution
+11. HTTP vs HTTPS
+12. Network Testing Utilities
 
-This order follows the natural flow of how data moves through a network, from low-level transmission to application-level communication.
-
----
-
-## Topics Covered
-
-This repository includes the following core networking concepts:
-
-- TCP/IP model and data flow
-- DNS resolution process
-- Subnetting and IP addressing
-- HTTP and HTTPS communication
-
-Each topic is explained in a simple, structured format to support understanding and revision.
+This order follows the logical flow of network communication, beginning from foundational models and moving toward practical protocols and tools.
 
 ---
 
 ## Learning Approach
 
-Each topic is written using the following approach:
+Each topic is written using the following framework:
 
-- Step-by-step explanations
-- Simple real-world examples
-- Clear breakdown of how systems behave
-- Basic security relevance where applicable
+* Concept explanation
+* Step-by-step process breakdown
+* Practical examples
+* Security relevance
+* Important observations and use cases
 
-This ensures the focus is on understanding, not memorization.
-
----
-
-## Repository Structure
-
-Each file in this repository represents one core networking concept. The structure is intentionally kept simple to improve readability and focus.
+This structure ensures that each topic is understood conceptually and operationally.
 
 ---
 
-## Future Improvements
+## Repository Scope
 
-This repository will be expanded as my learning progresses to include:
+This repository focuses only on networking concepts that are essential for cybersecurity and penetration testing.
 
-- Deeper network protocol analysis
-- Basic traffic analysis concepts
-- Security implications of network design
-- Practical networking simulations
+Topics with low direct relevance to offensive security, such as cabling types, wireless consumer setups, and historical communication systems, are intentionally excluded.
+
+The focus remains on practical and security-aligned networking knowledge.
+
+---
+
+## Future Expansion
+
+As learning progresses, this repository will expand into:
+
+* Linux fundamentals
+* Web security concepts
+* Network enumeration techniques
+* Traffic analysis
+* Security tools development
+
+This creates a progressive path from networking foundations to practical penetration testing.
 
 ---
 
 ## Note
 
-This repository is part of an ongoing learning process. The content will be refined and expanded over time as my understanding develops.
+This repository is part of an ongoing technical development journey. All writeups are based on active study, practical understanding, and continuous refinement.
+
+Accuracy, clarity, and practical relevance are prioritized in every topic.
 
 ---
 
 ## Author
 
-**Jerome Danquah Amoako**  
-Information Technology Background | MBA Candidate | Aspiring Cybersecurity Researcher
+**Jerome Danquah Amoako**
+Information Technology Background | MBA Candidate | Aspiring Penetration Tester
