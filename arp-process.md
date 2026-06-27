@@ -12,7 +12,7 @@ ARP is essential for local communication and for sending traffic to the default 
 
 ---
 
-## What ARP Does
+## What ARP Does 
 
 ARP answers one important question:
 
