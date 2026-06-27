@@ -146,7 +146,7 @@ Each subnet now provides:
 
 ## Diagram: Subnet Division
 
-![IPv4 Subnetting](images/ipv4-subnetting)
+![IPv4 Subnetting](images/ipv4-subnetting.jpg)
 
 ---
 
