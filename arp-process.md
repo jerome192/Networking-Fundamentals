@@ -71,12 +71,6 @@ The ARP process follows these steps:
 
 ---
 
-## Diagram: ARP Request and Reply
-
-![ARP Process](images/arp-process.gif)
-
----
-
 ## Step 1: ARP Cache Check
 
 Before sending an ARP request, the host checks its ARP cache.
