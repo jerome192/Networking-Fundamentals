@@ -4,22 +4,22 @@
 
 HTTP (Hypertext Transfer Protocol) and HTTPS (Hypertext Transfer Protocol Secure) are application-layer protocols used for communication between clients and web servers.
 
-They define how web browsers request resources and how servers respond.
+They define how browsers request resources and how servers respond.
 
-Almost every website uses one of these protocols.
+Almost every website on the internet depends on these protocols.
 
-In penetration testing, understanding HTTP and HTTPS is essential because most web attacks happen at this layer.
+In penetration testing, understanding HTTP and HTTPS is essential because most web-based attacks happen at this layer.
 
 ---
 
 ## What is HTTP?
 
-HTTP is a protocol used to transfer web content.
+HTTP is a protocol used to transfer web content between a client and a server.
 
 It operates at:
 
 ```text
-Application Layer
+Layer 7 (Application Layer)
 ```
 
 Default port:
@@ -37,13 +37,13 @@ This means:
 
 HTTP is stateless.
 
-Each request is independent.
+Each request is treated independently.
 
 ---
 
 ## What is HTTPS?
 
-HTTPS is HTTP secured with encryption.
+HTTPS is the secure version of HTTP.
 
 Default port:
 
@@ -57,19 +57,45 @@ HTTPS uses:
 TLS (Transport Layer Security)
 ```
 
+This encrypts communication between the client and the server.
+
 This protects:
 
-- data confidentiality
-- data integrity
+- confidentiality
+- integrity
 - authentication
 
-This prevents attackers from easily reading traffic.
+Without HTTPS:
+
+data can be intercepted more easily.
+
+---
+
+## How HTTP Communication Works
+
+Basic process:
+
+1. User enters a URL
+2. DNS resolves the domain name
+3. TCP connection is established
+4. Browser sends HTTP request
+5. Server processes request
+6. Server sends HTTP response
+7. Browser renders content
+
+This is how websites are loaded.
+
+---
+
+## Diagram: HTTP and HTTPS Communication
+
+![HTTP and HTTPS Communication](images/http-https.png)
 
 ---
 
 ## HTTP Request Structure
 
-A request contains:
+An HTTP request contains:
 
 - Method
 - Path
@@ -81,10 +107,10 @@ Example:
 ```text
 GET /index.html HTTP/1.1
 Host: example.com
-User-Agent: Browser
+User-Agent: Mozilla
 ```
 
-This tells the server what resource is requested.
+This tells the server what resource is needed.
 
 ---
 
@@ -93,13 +119,13 @@ This tells the server what resource is requested.
 | Method | Purpose |
 |---|---|
 | GET | Retrieve data |
-| POST | Send data |
+| POST | Submit data |
 | PUT | Update data |
 | DELETE | Remove data |
 
 These methods define client actions.
 
-Understanding them is important in web testing.
+Understanding them is important for web testing.
 
 ---
 
@@ -118,7 +144,7 @@ HTTP/1.1 200 OK
 Content-Type: text/html
 ```
 
-This tells the client the result.
+This tells the browser the result.
 
 ---
 
@@ -132,9 +158,9 @@ This tells the client the result.
 | 404 | Not Found |
 | 500 | Server Error |
 
-These help identify server behavior.
+Status codes reveal how servers respond.
 
-Important in enumeration.
+This is useful during enumeration.
 
 ---
 
@@ -142,8 +168,8 @@ Important in enumeration.
 
 | Feature | HTTP | HTTPS |
 |---|---|---|
-| Encryption | No | Yes |
 | Port | 80 | 443 |
+| Encryption | No | Yes |
 | Security | Low | High |
 | TLS | No | Yes |
 
@@ -153,7 +179,7 @@ HTTPS is the modern standard.
 
 ## Cookies and Sessions
 
-Web applications use cookies to maintain sessions.
+Web applications use cookies to maintain user sessions.
 
 Example:
 
@@ -161,27 +187,27 @@ Example:
 Set-Cookie: sessionid=abc123
 ```
 
-This allows authentication to persist across requests.
+This allows:
 
-This is important for:
+- login persistence
+- session tracking
+- authentication state
 
-- login systems
-- session management
-- web testing
+These are common targets in web attacks.
 
 ---
 
 ## Security Relevance
 
-HTTP/HTTPS is central in penetration testing.
+HTTP and HTTPS are critical in penetration testing.
 
 Examples:
 
 - SQL Injection
 - XSS
 - CSRF
-- Authentication bypass
 - Session hijacking
+- Authentication bypass
 - Directory enumeration
 
 Tools used:
@@ -190,15 +216,15 @@ Tools used:
 - cURL
 - Gobuster
 
-Most web attacks happen here.
+Most web application attacks happen at this layer.
 
 ---
 
 ## Key Takeaways
 
-- HTTP is the core web communication protocol.
-- HTTPS secures HTTP using TLS.
-- Requests and responses form web communication.
+- HTTP enables communication between browsers and servers.
+- HTTPS secures communication using TLS.
+- Requests and responses form web interactions.
 - Methods define client actions.
 - Status codes reveal server behavior.
 - Cookies maintain sessions.
@@ -207,6 +233,6 @@ Most web attacks happen here.
 
 ## Conclusion
 
-HTTP and HTTPS form the foundation of web communication.
+HTTP and HTTPS are the foundation of web communication.
 
-For penetration testers, understanding them is critical because they reveal how applications behave, how users interact with systems, and where vulnerabilities can be found.
+For penetration testers, understanding them is essential because they expose how applications function and where vulnerabilities can exist.
