@@ -38,6 +38,7 @@ The topics in this repository are structured in the following order:
 10. DNS Resolution
 11. HTTP vs HTTPS
 12. Network Testing Utilities
+13. network-security-basics.md
 
 This order follows the logical flow of network communication, beginning from foundational models and moving toward practical protocols and tools.
 
