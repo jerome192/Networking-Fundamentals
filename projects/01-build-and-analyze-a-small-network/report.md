@@ -1,5 +1,4 @@
 # Technical Investigation Report
-# Technical Investigation Report
 
 ## Phase 1: Windows Server 2025 Network Configuration
 
