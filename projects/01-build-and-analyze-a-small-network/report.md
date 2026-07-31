@@ -262,3 +262,211 @@ The initial network configuration and connectivity validation were successfully 
 The Windows Server and Kali Linux systems can now communicate across the isolated `intnet` network using manually configured IPv4 addresses.
 
 The next stage will introduce DHCP services on the Windows Server. Once DHCP is configured, Kali's `eth1` interface can be changed from a temporary static configuration to DHCP and tested for automatic IPv4 address assignment.
+
+# Phase 3: DHCP Server Deployment and Dynamic IPv4 Address Assignment
+
+## Objective
+
+Following the successful validation of communication using manually configured IPv4 addresses, the next stage of the investigation involved introducing Dynamic Host Configuration Protocol (DHCP) services into the isolated laboratory network.
+
+The objective of this phase was to configure the Windows Server 2025 virtual machine as the DHCP server for the **192.168.100.0/24** network and verify that client systems could automatically obtain valid IPv4 configuration information without requiring manual configuration.
+
+Successful completion of this phase would demonstrate the transition from manual host configuration to centralized network administration, where IPv4 addresses are dynamically assigned and managed by the server.
+
+---
+
+## Initial Network State
+
+At the end of Phase 2, communication between the Windows Server and Kali Linux had already been successfully established using manually configured IPv4 addresses.
+
+The systems were configured as follows:
+
+**Windows Server 2025**
+
+- IPv4 Address: **192.168.100.10**
+- Subnet Mask: **255.255.255.0**
+
+**Kali Linux**
+
+- IPv4 Address: **192.168.100.20**
+- Subnet Mask: **255.255.255.0**
+
+Connectivity testing confirmed successful communication between both hosts across the isolated **intnet** network.
+
+Although the network was fully operational, IPv4 configuration still required manual assignment on every client. This approach is not practical for enterprise environments where multiple hosts require centralized and automated network configuration.
+
+The next step therefore involved deploying a DHCP server capable of automatically distributing IPv4 addressing information to client systems.
+
+---
+
+## DHCP Server Installation
+
+The DHCP Server role was installed on the Windows Server 2025 virtual machine using the **Add Roles and Features Wizard** available through Server Manager.
+
+Following installation, the DHCP Post-Installation Configuration Wizard was completed to authorize the DHCP server within the Active Directory domain.
+
+Authorization is required because the server operates as a Domain Controller. Windows prevents unauthorized DHCP servers from distributing IPv4 addresses within an Active Directory environment to protect clients from receiving configuration information from rogue DHCP servers.
+
+Once authorization was completed successfully, the DHCP service became available for scope configuration.
+
+---
+
+## DHCP Scope Configuration
+
+A new IPv4 scope was created to provide dynamic IPv4 addressing for hosts connected to the isolated **intnet** network.
+
+The scope was configured using the following parameters:
+
+| Parameter | Value |
+|-----------|-------|
+| Scope Name | Internal Network |
+| Network | 192.168.100.0/24 |
+| Start Address | 192.168.100.100 |
+| End Address | 192.168.100.200 |
+| Subnet Mask | 255.255.255.0 |
+| Lease Duration | Default |
+| Router (Option 003) | None |
+| DNS Server (Option 006) | 192.168.100.10 |
+| DNS Domain (Option 015) | dsecure.local |
+
+After configuration, the scope was activated, allowing the DHCP service to begin responding to client requests.
+
+![DHCP Scope Overview](images/01-dhcp-scope-overview.png)
+
+---
+
+## Client Transition from Static Configuration to DHCP
+
+Before requesting a DHCP lease, the temporary static IPv4 configuration previously assigned to Kali Linux was removed.
+
+The temporary address:
+
+**192.168.100.20/24**
+
+was deleted from the **eth1** interface.
+
+The DHCP client package (**isc-dhcp-client**) was then installed to allow Kali Linux to communicate with the Windows DHCP server.
+
+A DHCP request was initiated using:
+
+```bash
+sudo dhclient -v eth1
+```
+
+This command broadcasts a **DHCPDISCOVER** message requesting IPv4 configuration from any available DHCP server on the local subnet.
+
+---
+
+## Troubleshooting Investigation
+
+The initial DHCP request did not produce a successful response.
+
+Instead, repeated **DHCPDISCOVER** messages were transmitted without receiving a corresponding **DHCPOFFER** from the Windows Server.
+
+Investigation initially focused on verifying:
+
+- Physical connectivity between both virtual machines.
+- Correct VirtualBox Internal Network configuration.
+- DHCP Server installation.
+- Scope activation.
+- DHCP Client operation on Kali Linux.
+
+Since all configuration appeared correct, Windows Event Viewer was examined to determine why the DHCP server was not responding.
+
+The investigation revealed that although the DHCP role had been installed, the DHCP service had not yet been properly authorized within Active Directory.
+
+As a result, Windows prevented the DHCP server from servicing client requests.
+
+Once authorization was completed and the DHCP service restarted, the server immediately became capable of leasing IPv4 addresses to clients.
+
+---
+
+## DHCP Lease Verification
+
+Following successful authorization, Kali Linux again requested an IPv4 address using:
+
+```bash
+sudo dhclient -v eth1
+```
+
+This time, the Windows Server responded successfully with:
+
+- DHCPDISCOVER
+- DHCPOFFER
+- DHCPREQUEST
+- DHCPACK
+
+The client was dynamically assigned the following IPv4 address:
+
+**192.168.100.100/24**
+
+The successful lease acquisition is shown below.
+
+![Kali DHCP Lease](images/03-kali-dhcp-lease.png)
+
+The Windows DHCP console simultaneously recorded the active lease.
+
+![DHCP Address Lease](images/02-dhcp-address-lease.png)
+
+---
+
+## Connectivity Verification
+
+After receiving the dynamically assigned IPv4 address, connectivity between Kali Linux and the Windows Server was tested once again using ICMP.
+
+The verification command executed was:
+
+```bash
+ping -c 4 192.168.100.10
+```
+
+The results confirmed:
+
+- 4 packets transmitted.
+- 4 packets received.
+- 0% packet loss.
+
+Successful communication demonstrated that the dynamically assigned IPv4 address functioned correctly within the isolated laboratory network.
+
+![Connectivity Verification](images/04-kali-connectivity-test.png)
+
+---
+
+## Technical Interpretation
+
+This phase demonstrates the complete lifecycle of DHCP deployment within an enterprise-style Windows Server environment.
+
+Rather than manually configuring IPv4 addresses on every host, the Windows Server now performs centralized IPv4 address allocation for clients connected to the **192.168.100.0/24** network.
+
+The successful lease process confirmed the correct operation of the standard DHCP exchange:
+
+- DHCPDISCOVER
+- DHCPOFFER
+- DHCPREQUEST
+- DHCPACK
+
+The investigation also demonstrated the importance of DHCP authorization within Active Directory environments, where Windows prevents unauthorized DHCP servers from distributing network configuration information.
+
+The resulting communication path is therefore:
+
+Kali Linux
+(Dynamic IPv4 Address)
+192.168.100.100/24
+        │
+        │ DHCP Lease
+        │
+Windows Server 2025
+DHCP Server
+192.168.100.10/24
+
+---
+
+## Phase 3 Conclusion
+
+The Windows Server 2025 virtual machine has been successfully configured as the DHCP server for the isolated laboratory network.
+
+Kali Linux successfully transitioned from a manually configured IPv4 address to a dynamically assigned DHCP lease while maintaining reliable communication with the Windows Server.
+
+The laboratory network now supports centralized IPv4 address management, providing a foundation for additional enterprise network services.
+
+The next phase will focus on configuring Domain Name System (DNS) services and verifying hostname resolution within the isolated network.
