@@ -331,7 +331,7 @@ The scope was configured using the following parameters:
 
 After configuration, the scope was activated, allowing the DHCP service to begin responding to client requests.
 
-![DHCP Scope Overview](images/01-dhcp-scope-overview.png)
+![DHCP Scope Overview](evidence/01-dhcp-scope-overview.png)
 
 ---
 
@@ -402,11 +402,11 @@ The client was dynamically assigned the following IPv4 address:
 
 The successful lease acquisition is shown below.
 
-![Kali DHCP Lease](images/03-kali-dhcp-lease.png)
+![Kali DHCP Lease](evidence/03-kali-dhcp-lease.png)
 
 The Windows DHCP console simultaneously recorded the active lease.
 
-![DHCP Address Lease](images/02-dhcp-address-lease.png)
+![DHCP Address Lease](evidence/02-dhcp-address-lease.png)
 
 ---
 
@@ -428,7 +428,7 @@ The results confirmed:
 
 Successful communication demonstrated that the dynamically assigned IPv4 address functioned correctly within the isolated laboratory network.
 
-![Connectivity Verification](images/04-kali-connectivity-test.png)
+![Connectivity Verification](evidence/04-kali-connectivity-test.png)
 
 ---
 
