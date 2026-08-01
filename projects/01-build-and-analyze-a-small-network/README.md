@@ -85,15 +85,15 @@ This project demonstrates practical understanding of:
 
 | Phase                                | Status        |
 | ------------------------------------ | ------------- |
-| Windows Server Network Configuration | ✅ Completed   |
-| Client Configuration                 | ✅ Completed|
-| Connectivity Testing                 | ✅ Completed     |
-| ARP Investigation                    | ⏳ Pending     |
-| DHCP Configuration                   | ✅ Completed     |
-| DNS Configuration                    | ⏳ Pending     |
-| Routing Analysis                     | ⏳ Pending     |
-| Packet Capture Analysis              | ⏳ Pending     |
-| Final Documentation                  | ⏳ Pending     |
+| Windows Server Network Configuration | ✅ Completed  |
+| Client Configuration                 | ✅ Completed  |
+| Connectivity Testing                 | ✅ Completed  |
+| ARP Investigation                    | ⏳ Pending    |
+| DHCP Configuration                   | ✅ Completed  |
+| DNS Configuration                    | ✅ Completed  |
+| Routing Analysis                     | ⏳ Pending    |
+| Packet Capture Analysis              | ⏳ Pending    |
+| Final Documentation                  | ⏳ Pending    |
 
 ---
 
