@@ -88,7 +88,7 @@ This project demonstrates practical understanding of:
 | Windows Server Network Configuration | ✅ Completed  |
 | Client Configuration                 | ✅ Completed  |
 | Connectivity Testing                 | ✅ Completed  |
-| ARP Investigation                    | ⏳ Pending    |
+| ARP Investigation                    | ✅ Completed  |
 | DHCP Configuration                   | ✅ Completed  |
 | DNS Configuration                    | ✅ Completed  |
 | Routing Analysis                     | ⏳ Pending    |
