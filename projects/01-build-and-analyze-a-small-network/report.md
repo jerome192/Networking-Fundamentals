@@ -470,3 +470,184 @@ Kali Linux successfully transitioned from a manually configured IPv4 address to 
 The laboratory network now supports centralized IPv4 address management, providing a foundation for additional enterprise network services.
 
 The next phase will focus on configuring Domain Name System (DNS) services and verifying hostname resolution within the isolated network.
+
+# Phase 4: Domain Name System (DNS) Configuration and Name Resolution Verification
+
+## Objective
+
+Following the successful deployment of DHCP services, the next stage of the investigation focused on implementing and validating Domain Name System (DNS) services within the isolated laboratory network.
+
+The objective of this phase was to verify that the Windows Server 2025 virtual machine could successfully provide DNS services for the **dsecure.local** domain and confirm that client systems could resolve hostnames into IPv4 addresses without requiring manual IP address references.
+
+Successful completion of this phase would demonstrate the integration of DHCP and DNS services, allowing client systems to automatically receive DNS configuration and communicate using hostnames instead of numerical IPv4 addresses.
+
+---
+
+## Initial Network State
+
+At the conclusion of Phase 3, Kali Linux had successfully obtained its IPv4 configuration dynamically from the Windows DHCP server.
+
+The resulting network configuration was:
+
+**Windows Server 2025**
+
+- IPv4 Address: **192.168.100.10**
+- DNS Server: **192.168.100.10**
+
+**Kali Linux**
+
+- IPv4 Address: **192.168.100.100**
+- DNS Server: **192.168.100.10**
+- DNS Search Domain: **dsecure.local**
+
+The DHCP lease successfully distributed both the DNS server address and the Active Directory DNS search domain to the client.
+
+The next stage therefore focused on validating that hostname resolution functioned correctly across the isolated network.
+
+---
+
+## DNS Zone Verification
+
+The DNS Manager console was opened through **Server Manager** to verify that the Active Directory DNS zone had been created correctly.
+
+The Forward Lookup Zones contained the following domain:
+
+**dsecure.local**
+
+Within this zone, a Host (A) resource record existed for the Windows Server.
+
+Hostname:
+
+**danquixsecure**
+
+IPv4 Address:
+
+**192.168.100.10**
+
+The presence of this resource record confirms that the Windows Server is registered within the Active Directory integrated DNS zone and can be resolved by DNS clients.
+
+![Windows DNS Forward Lookup Zone](evidence/05-windows-dns-forward-lookup.png)
+
+---
+
+## Windows Server DNS Verification
+
+DNS functionality was first verified directly from the Windows Server using the **nslookup** utility.
+
+The following command was executed:
+
+```cmd
+nslookup danquixsecure
+```
+
+The result successfully resolved:
+
+**danquixsecure.dsecure.local**
+
+to
+
+**192.168.100.10**
+
+Although the command reported the DNS server as **Unknown**, the forward lookup completed successfully. This behaviour occurs because a Reverse Lookup Zone had not yet been configured for the laboratory network.
+
+The successful forward lookup confirms that the Windows DNS service is operating correctly.
+
+---
+
+## Client DNS Resolution Verification
+
+DNS functionality was subsequently verified from the Kali Linux client.
+
+The current DNS configuration was examined and confirmed that DHCP had automatically supplied:
+
+- DNS Server: **192.168.100.10**
+- DNS Search Domain: **dsecure.local**
+
+Kali Linux then queried the Windows DNS server using:
+
+```bash
+nslookup danquixsecure.dsecure.local 192.168.100.10
+```
+
+The query successfully returned:
+
+**192.168.100.10**
+
+This demonstrated that the Windows Server correctly resolved Fully Qualified Domain Names (FQDNs) for clients connected to the isolated laboratory network.
+
+![Kali DNS Resolution](evidence/06-kali-dns-resolution.png)
+
+---
+
+## Hostname Connectivity Verification
+
+The final verification step confirmed that client applications could successfully use DNS rather than manually specified IPv4 addresses.
+
+Kali Linux executed:
+
+```bash
+ping -c 4 danquixsecure.dsecure.local
+```
+
+Instead of requiring the server's numerical IPv4 address, the hostname was successfully resolved by DNS before ICMP communication began.
+
+The results confirmed:
+
+- Hostname successfully resolved.
+- IPv4 Address: **192.168.100.10**
+- 4 packets transmitted.
+- 4 packets received.
+- 0% packet loss.
+
+This demonstrates successful integration between DHCP, DNS and client name resolution services.
+
+![Hostname Connectivity Verification](evidence/07-kali-ping-hostname.png)
+
+---
+
+## Technical Interpretation
+
+This phase demonstrates the successful deployment and verification of Domain Name System services within the isolated Active Directory laboratory environment.
+
+The Windows Server now performs two critical infrastructure roles:
+
+- Dynamic Host Configuration Protocol (DHCP)
+- Domain Name System (DNS)
+
+Rather than relying on manually remembered IPv4 addresses, client systems can communicate using meaningful hostnames. DHCP automatically distributes the DNS server configuration while DNS translates hostnames into their corresponding IPv4 addresses.
+
+The successful resolution of **danquixsecure.dsecure.local** confirms that Active Directory integrated DNS is functioning correctly and that clients can locate network resources using standard enterprise name resolution.
+
+The communication process is therefore:
+
+Kali Linux
+
+Hostname Request
+
+**danquixsecure.dsecure.local**
+
+↓
+
+Windows DNS Server
+
+**192.168.100.10**
+
+↓
+
+Hostname resolved to IPv4 Address
+
+↓
+
+ICMP communication established
+
+---
+
+## Phase 4 Conclusion
+
+The Windows Server 2025 virtual machine has been successfully validated as the Domain Name System (DNS) server for the isolated laboratory network.
+
+Kali Linux automatically received DNS configuration through DHCP and successfully resolved the server hostname using the Windows DNS service.
+
+This phase completes the deployment of the core network infrastructure services required for enterprise communication, providing centralized IPv4 addressing through DHCP and centralized hostname resolution through DNS.
+
+The next phase will investigate the Address Resolution Protocol (ARP) to examine how IPv4 communication is translated into Layer 2 Ethernet communication before packets are transmitted across the local network.
