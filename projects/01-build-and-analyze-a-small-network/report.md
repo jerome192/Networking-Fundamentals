@@ -651,3 +651,162 @@ Kali Linux automatically received DNS configuration through DHCP and successfull
 This phase completes the deployment of the core network infrastructure services required for enterprise communication, providing centralized IPv4 addressing through DHCP and centralized hostname resolution through DNS.
 
 The next phase will investigate the Address Resolution Protocol (ARP) to examine how IPv4 communication is translated into Layer 2 Ethernet communication before packets are transmitted across the local network.
+
+# Phase 5: Address Resolution Protocol (ARP) Investigation
+
+## Objective
+
+Following the successful deployment of DHCP and DNS services, the next stage of the investigation focused on understanding how communication occurs at the Data Link Layer before IPv4 packets are transmitted across the local network.
+
+The objective of this phase was to examine the operation of the Address Resolution Protocol (ARP), observe the exchange of ARP Request and ARP Reply messages, and verify how Kali Linux dynamically learned the MAC address of the Windows Server before transmitting ICMP packets.
+
+Successful completion of this phase would demonstrate how Layer 3 IPv4 communication depends on Layer 2 Ethernet addressing within a local area network.
+
+---
+
+## Initial ARP Cache State
+
+Before generating any network traffic, the ARP cache on Kali Linux was cleared to ensure that no previously learned MAC addresses would influence the investigation.
+
+The following command was executed:
+
+```bash
+sudo ip neigh flush dev eth1
+```
+
+The ARP table was then examined using:
+
+```bash
+ip neigh
+```
+
+The output confirmed that no ARP entry existed for the Windows Server (**192.168.100.10**) on the **eth1** interface.
+
+This ensured that the next communication attempt would require a fresh ARP resolution process.
+
+![Empty ARP Cache](evidence/08-empty-arp-cache.png)
+
+---
+
+## Capturing ARP Traffic
+
+Wireshark was started on the **eth1** interface to capture Layer 2 communication occurring on the isolated **intnet** network.
+
+To trigger ARP activity, Kali Linux attempted to contact the Windows Server using:
+
+```bash
+ping -c 1 192.168.100.10
+```
+
+Because Kali knew the destination IPv4 address but did not yet know the corresponding Ethernet MAC address, it could not immediately transmit the ICMP Echo Request.
+
+Instead, the operating system first initiated the Address Resolution Protocol.
+
+---
+
+## ARP Request and Reply Analysis
+
+Wireshark captured the complete ARP exchange between both systems.
+
+The first frame observed was an **ARP Request** transmitted by Kali Linux:
+
+> Who has **192.168.100.10**? Tell **192.168.100.100**
+
+Because Ethernet broadcasts are used during ARP discovery, this request was sent to every device on the local subnet.
+
+The Windows Server recognized that the requested IPv4 address belonged to its own network interface and immediately responded with an **ARP Reply**:
+
+> 192.168.100.10 is at **08:00:27:e0:30:10**
+
+The capture also showed the reverse ARP exchange, where the Windows Server learned the MAC address of the Kali Linux client.
+
+This mutual exchange allows both hosts to communicate directly using Ethernet frames.
+
+![ARP Request and Reply](evidence/09-arp-request-reply.png)
+
+---
+
+## ARP Cache Verification
+
+Following the successful ARP exchange, the ARP cache on Kali Linux was examined once again using:
+
+```bash
+ip neigh
+```
+
+The output now contained a dynamically learned entry:
+
+- IPv4 Address: **192.168.100.10**
+- Interface: **eth1**
+- MAC Address: **08:00:27:e0:30:10**
+- State: **STALE**
+
+The presence of this entry confirms that Kali Linux successfully resolved the Windows Server's Ethernet address.
+
+The **STALE** state indicates that the entry remains valid but has not been used recently. Linux will automatically refresh the entry whenever further communication occurs.
+
+![Populated ARP Cache](evidence/10-arp-cache-populated.png)
+
+---
+
+## Technical Interpretation
+
+This investigation demonstrates the relationship between Layer 2 and Layer 3 communication within a local network.
+
+Although the user initiated communication using an IPv4 address, Ethernet communication cannot begin until the destination MAC address is known.
+
+The sequence observed during this investigation was:
+
+1. Kali Linux attempts to communicate with **192.168.100.10**.
+2. The ARP cache does not contain the destination MAC address.
+3. Kali broadcasts an ARP Request to the local network.
+4. The Windows Server replies with its Ethernet MAC address.
+5. Kali stores the mapping in its ARP cache.
+6. The ICMP Echo Request is transmitted using the resolved MAC address.
+7. Communication proceeds normally.
+
+Without ARP, IPv4 communication between devices located on the same subnet would not be possible because Ethernet frames require MAC addresses rather than IPv4 addresses.
+
+The communication flow can therefore be represented as:
+
+Kali Linux
+
+192.168.100.100
+
+↓
+
+ARP Request (Broadcast)
+
+↓
+
+Windows Server
+
+192.168.100.10
+
+↓
+
+ARP Reply
+
+↓
+
+ARP Cache Updated
+
+↓
+
+ICMP Echo Request
+
+↓
+
+ICMP Echo Reply
+
+---
+
+## Phase 5 Conclusion
+
+The Address Resolution Protocol was successfully investigated within the isolated laboratory network.
+
+Wireshark captured both the ARP Request and ARP Reply exchanged between Kali Linux and the Windows Server, demonstrating how Layer 2 address resolution occurs before IPv4 communication begins.
+
+Verification of the ARP cache confirmed that Kali Linux dynamically learned and stored the Windows Server's Ethernet MAC address after the exchange.
+
+This phase establishes the critical relationship between Ethernet addressing and IPv4 communication, providing the foundation for the subsequent analysis of packet flow and routing behaviour within the network.
