@@ -1049,3 +1049,27 @@ The packet analysis completed throughout this investigation demonstrates the com
 By combining observations from DNS, routing, ARP and ICMP, the project illustrates how modern operating systems establish communication between hosts while maintaining separation between logical addressing, physical addressing and packet delivery.
 
 This completes the technical investigation of network communication within the isolated VirtualBox laboratory.
+
+# Final Project Conclusion
+
+## Conclusion
+
+This project successfully demonstrated the process of designing, configuring, and analysing a small isolated IPv4 network using VirtualBox, Windows Server 2025, and Kali Linux.
+
+The investigation began with the manual configuration of a static IPv4 address on the Windows Server, establishing it as the primary infrastructure host within the laboratory environment. A temporary static configuration was then applied to the Kali Linux client to verify basic connectivity before dynamic network services were introduced.
+
+A DHCP server was subsequently deployed on Windows Server 2025, enabling automatic IPv4 address allocation to client systems. Successful lease assignment confirmed that the DHCP service was functioning correctly and that client configuration could now be managed centrally.
+
+Following DHCP deployment, the Windows Server was configured to provide DNS services through Active Directory. Forward lookup records were verified using both Windows and Kali Linux, demonstrating successful hostname resolution within the **dsecure.local** domain.
+
+The project then examined the Address Resolution Protocol (ARP), showing how IPv4 communication depends on Ethernet MAC address resolution before packets can be transmitted across the local network. Packet captures collected using Wireshark confirmed the complete ARP Request and Reply exchange between the client and the server.
+
+Routing analysis demonstrated that both operating systems correctly identified the **192.168.100.0/24** network as directly connected. As a result, communication between the two hosts occurred without requiring a router or default gateway, relying instead on direct Layer 2 delivery after ARP resolution.
+
+Finally, the collected packet captures and protocol investigations were combined to analyse the complete communication workflow, illustrating how DNS, routing, ARP, Ethernet, IPv4 and ICMP cooperate to establish successful communication between hosts.
+
+Throughout the project, every configuration step was validated using appropriate administrative tools, command-line utilities and packet analysis. The resulting documentation provides both theoretical explanations and practical evidence supporting each stage of the investigation.
+
+This project establishes a solid foundation for future studies in networking and cybersecurity. The knowledge gained from configuring network services, analysing protocol behaviour and interpreting packet captures will support more advanced topics including network security, vulnerability assessment, penetration testing, Active Directory security and enterprise network administration.
+
+The completed laboratory demonstrates not only the successful deployment of a functional client-server network but also a comprehensive understanding of the networking principles that enable reliable communication within modern computer networks.
