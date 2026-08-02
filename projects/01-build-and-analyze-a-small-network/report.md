@@ -810,3 +810,113 @@ Wireshark captured both the ARP Request and ARP Reply exchanged between Kali Lin
 Verification of the ARP cache confirmed that Kali Linux dynamically learned and stored the Windows Server's Ethernet MAC address after the exchange.
 
 This phase establishes the critical relationship between Ethernet addressing and IPv4 communication, providing the foundation for the subsequent analysis of packet flow and routing behaviour within the network.
+
+# Phase 6: Routing Analysis
+
+## Objective
+
+Following the successful investigation of ARP, the next stage of the project focused on examining how both operating systems determine the path used to deliver IPv4 packets across the laboratory network.
+
+The objective of this phase was to analyse the routing tables of both Windows Server 2025 and Kali Linux and verify how each operating system selects the appropriate network interface when communicating with hosts located on the same subnet.
+
+Successful completion of this phase demonstrates that communication between the two virtual machines occurs through direct delivery rather than via a router or default gateway.
+
+---
+
+## Windows Routing Table Analysis
+
+The routing table on Windows Server 2025 was examined using:
+
+```cmd
+route print
+```
+
+The routing table contained the following entry for the laboratory network:
+
+- Network Destination: **192.168.100.0**
+- Netmask: **255.255.255.0**
+- Gateway: **On-link**
+- Interface: **192.168.100.10**
+
+The **On-link** gateway indicates that the destination network is directly connected to the local machine.
+
+Instead of forwarding packets to another device, Windows delivers traffic directly onto the Ethernet network through its own network interface.
+
+![Windows Routing Table](evidence/11-windows-routing-table.png)
+
+---
+
+## Kali Linux Routing Table Analysis
+
+The routing table on Kali Linux was examined using:
+
+```bash
+ip route
+```
+
+The routing table contained the following entry:
+
+```text
+192.168.100.0/24 dev eth1
+```
+
+This entry indicates that the entire **192.168.100.0/24** network is directly connected through the **eth1** interface.
+
+Linux therefore knows that any destination within this subnet should be transmitted directly through **eth1** without consulting the default gateway.
+
+![Kali Routing Table](evidence/12-kali-routing-table.png)
+
+---
+
+## Route Verification
+
+The routing decision for the Windows Server was verified using:
+
+```bash
+ip route get 192.168.100.10
+```
+
+The operating system returned:
+
+```text
+192.168.100.10 dev eth1 src 192.168.100.100
+```
+
+This confirms that packets destined for the Windows Server are transmitted directly through the **eth1** interface using Kali's own source address.
+
+No intermediate router or gateway is involved in the communication path.
+
+![Route Verification](evidence/13-route-to-server.png)
+
+---
+
+## Technical Interpretation
+
+Both operating systems maintain routing tables that determine how IPv4 packets should be delivered.
+
+Because both virtual machines belong to the same subnet (**192.168.100.0/24**), each operating system recognises that the destination network is directly connected.
+
+The routing process therefore follows these steps:
+
+1. The destination IPv4 address is compared against the routing table.
+2. The matching network (**192.168.100.0/24**) is identified.
+3. The operating system selects the **eth1** interface.
+4. Since the destination is directly connected, no default gateway is consulted.
+5. The packet is passed to the Address Resolution Protocol (ARP) to determine the destination MAC address.
+6. The Ethernet frame is transmitted directly to the Windows Server.
+
+This demonstrates the relationship between Layer 3 routing decisions and Layer 2 address resolution.
+
+---
+
+## Phase 6 Conclusion
+
+The routing behaviour of both Windows Server 2025 and Kali Linux was successfully analysed.
+
+Both operating systems identified the **192.168.100.0/24** laboratory network as directly connected and selected their local network interfaces for communication.
+
+Because both hosts reside on the same subnet, packet delivery occurs through direct Layer 2 communication without involving a router or default gateway.
+
+This phase completes the analysis of logical packet forwarding within the isolated laboratory network.
+
+The next phase will examine packet captures in greater detail to analyse the complete communication process observed throughout the project.
