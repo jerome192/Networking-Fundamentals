@@ -920,3 +920,132 @@ Because both hosts reside on the same subnet, packet delivery occurs through dir
 This phase completes the analysis of logical packet forwarding within the isolated laboratory network.
 
 The next phase will examine packet captures in greater detail to analyse the complete communication process observed throughout the project.
+
+# Phase 7: Packet Capture Analysis
+
+## Objective
+
+The final technical phase of this project focused on analysing the network communication observed throughout the laboratory exercises and explaining how the individual networking protocols operate together to establish successful communication between hosts.
+
+Rather than examining each protocol independently, this phase combines the observations from the previous investigations to describe the complete communication process that occurs when a user initiates network communication.
+
+The objective is to demonstrate how DNS, routing, ARP, Ethernet, IPv4 and ICMP collectively enable successful communication across the local network.
+
+---
+
+## Communication Sequence
+
+Throughout the project, several protocols were investigated individually. When combined, they form the complete communication sequence observed during testing.
+
+The communication process follows the order below:
+
+1. The user initiates communication by executing a network command.
+2. If a hostname is supplied, DNS resolves the hostname into an IPv4 address.
+3. The operating system consults its routing table to determine the appropriate outgoing network interface.
+4. Because the destination resides on the same subnet, no default gateway is required.
+5. The operating system checks its ARP cache for the destination MAC address.
+6. If no MAC address exists, an ARP Request is broadcast across the local network.
+7. The destination host replies with its Ethernet MAC address.
+8. The ARP cache is updated with the newly learned mapping.
+9. The operating system encapsulates the IPv4 packet inside an Ethernet frame.
+10. The ICMP Echo Request is transmitted to the destination host.
+11. The destination processes the request and returns an ICMP Echo Reply.
+12. The source host confirms successful communication.
+
+The sequence can therefore be represented as:
+
+User Command
+
+↓
+
+DNS Resolution (if required)
+
+↓
+
+Routing Table Lookup
+
+↓
+
+ARP Cache Lookup
+
+↓
+
+ARP Request
+
+↓
+
+ARP Reply
+
+↓
+
+Ethernet Frame Construction
+
+↓
+
+ICMP Echo Request
+
+↓
+
+ICMP Echo Reply
+
+↓
+
+Successful Communication
+
+---
+
+## Protocol Relationship
+
+The investigation demonstrates that no single networking protocol is capable of delivering communication independently.
+
+Each protocol performs a specialised function within the communication process.
+
+| Protocol | Purpose |
+|----------|---------|
+| DNS | Resolves hostnames into IPv4 addresses. |
+| Routing | Selects the appropriate outgoing network interface. |
+| ARP | Resolves IPv4 addresses into Ethernet MAC addresses. |
+| Ethernet | Delivers frames across the local network. |
+| IPv4 | Provides logical addressing between hosts. |
+| ICMP | Verifies network connectivity through Echo Requests and Replies. |
+
+Together, these protocols enable reliable communication between devices operating within the same network.
+
+---
+
+## Evidence Summary
+
+The packet captures and network investigations completed throughout this project confirmed that:
+
+- ARP Requests were broadcast when the destination MAC address was unknown.
+- The Windows Server responded with an ARP Reply containing its Ethernet address.
+- Kali Linux successfully updated its ARP cache with the learned MAC address.
+- Both operating systems identified the laboratory network as directly connected.
+- Successful ICMP communication occurred after Layer 2 address resolution was completed.
+- DNS successfully resolved the server hostname to its configured IPv4 address.
+
+The captured ARP traffic provides direct evidence of the interaction between Layer 2 and Layer 3 protocols during host communication.
+
+![ARP Packet Capture](evidence/09-arp-request-reply.png)
+
+---
+
+## Technical Interpretation
+
+This investigation illustrates how multiple layers of the TCP/IP model cooperate during normal network communication.
+
+Although users interact with simple commands such as **ping**, several independent protocols execute automatically in the background before communication can occur.
+
+The operating system first determines the destination address, selects the appropriate network interface, resolves the destination MAC address, constructs an Ethernet frame, and finally transmits the IPv4 packet.
+
+This layered design separates responsibilities between protocols while allowing them to operate together as a unified communication process.
+
+---
+
+## Phase 7 Conclusion
+
+The packet analysis completed throughout this investigation demonstrates the complete communication workflow inside a local IPv4 network.
+
+By combining observations from DNS, routing, ARP and ICMP, the project illustrates how modern operating systems establish communication between hosts while maintaining separation between logical addressing, physical addressing and packet delivery.
+
+This completes the technical investigation of network communication within the isolated VirtualBox laboratory.
