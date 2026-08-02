@@ -91,7 +91,7 @@ This project demonstrates practical understanding of:
 | ARP Investigation                    | ✅ Completed  |
 | DHCP Configuration                   | ✅ Completed  |
 | DNS Configuration                    | ✅ Completed  |
-| Routing Analysis                     | ⏳ Pending    |
+| Routing Analysis                     | ✅ Completed  |
 | Packet Capture Analysis              | ⏳ Pending    |
 | Final Documentation                  | ⏳ Pending    |
 
